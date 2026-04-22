@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "ArtisanSN - Marketplace de Services"
+version = "1.0.0"
+id = "artifacts/artisan-sn"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22104
+
+[services.development]
+run = "pnpm --filter @workspace/artisan-sn run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/artisan-sn", "run", "build" ]
+publicDir = "artifacts/artisan-sn/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22104"
+BASE_PATH = "/"

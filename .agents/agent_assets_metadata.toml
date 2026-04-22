@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "-yx9JdfyfuIL7Gt6r2IZH"
+uri = "file://artifacts/artisan-sn/public/hero-bg.png"
+type = "image"
+title = "Dakar market hero background"
+
+[[generated]]
+id = "BkVrfSBuTMa43Q0HQctju"
+uri = "file://artifacts/artisan-sn/public/plumber.png"
+type = "image"
+title = "Plumber working"
+
+[[generated]]
+id = "nrD-5Tja0tqf4ywoGJ_LC"
+uri = "file://artifacts/artisan-sn/public/tailor.png"
+type = "image"
+title = "Tailor working"
