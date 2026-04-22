@@ -14,31 +14,32 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPin, Star, Phone, Mail, Clock, ShieldCheck, Wrench, Calendar as CalendarIcon, ChevronLeft, Edit } from "lucide-react";
 import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const bookingSchema = z.object({
-  clientName: z.string().min(2, "Name is required"),
-  clientPhone: z.string().min(8, "Valid phone number is required"),
-  serviceDescription: z.string().min(10, "Please describe what you need help with"),
+  clientName: z.string().min(2, "Le nom est obligatoire"),
+  clientPhone: z.string().min(8, "Un numéro de téléphone valide est requis"),
+  serviceDescription: z.string().min(10, "Veuillez décrire ce dont vous avez besoin"),
   scheduledDate: z.string().optional(),
-  city: z.string().min(2, "City is required"),
+  city: z.string().min(2, "La ville est obligatoire"),
 });
 
 const reviewSchema = z.object({
-  clientName: z.string().min(2, "Name is required"),
+  clientName: z.string().min(2, "Le nom est obligatoire"),
   rating: z.coerce.number().min(1).max(5),
   comment: z.string().optional(),
 });
@@ -65,11 +66,11 @@ export default function ArtisanProfile() {
   const updateArtisan = useUpdateArtisan();
 
   const editProfileSchema = z.object({
-    bio: z.string().min(20, "Bio must be at least 20 characters").max(500),
+    bio: z.string().min(20, "La présentation doit contenir au moins 20 caractères").max(500),
     priceRange: z.string().optional(),
     yearsExperience: z.coerce.number().min(0).max(60).optional(),
-    phone: z.string().min(8, "Valid phone number is required"),
-    email: z.string().email("Invalid email address").optional().or(z.literal("")),
+    phone: z.string().min(8, "Un numéro de téléphone valide est requis"),
+    email: z.string().email("Adresse email invalide").optional().or(z.literal("")),
   });
 
   const editForm = useForm<z.infer<typeof editProfileSchema>>({
@@ -83,7 +84,6 @@ export default function ArtisanProfile() {
     },
   });
 
-  // Update default values when artisan data loads
   if (artisan && !editForm.getValues("phone") && artisan.phone) {
     editForm.reset({
       bio: artisan.bio || "",
@@ -100,8 +100,8 @@ export default function ArtisanProfile() {
       {
         onSuccess: () => {
           toast({
-            title: "Profile updated",
-            description: "Your changes have been saved successfully.",
+            title: "Profil mis à jour",
+            description: "Vos modifications ont été enregistrées avec succès.",
           });
           setIsEditDialogOpen(false);
           queryClient.invalidateQueries({ queryKey: getGetArtisanQueryKey(artisanId) });
@@ -109,14 +109,13 @@ export default function ArtisanProfile() {
         onError: () => {
           toast({
             variant: "destructive",
-            title: "Update failed",
-            description: "Could not update profile. Please try again.",
+            title: "Échec de la mise à jour",
+            description: "Impossible de mettre à jour le profil. Veuillez réessayer.",
           });
         }
       }
     );
   };
-
 
   const bookingForm = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
@@ -144,16 +143,16 @@ export default function ArtisanProfile() {
       {
         onSuccess: () => {
           toast({
-            title: "Booking request sent!",
-            description: "The artisan will contact you shortly to confirm.",
+            title: "Demande envoyée !",
+            description: "L'artisan vous contactera bientôt pour confirmer.",
           });
           bookingForm.reset();
         },
-        onError: (err) => {
+        onError: () => {
           toast({
             variant: "destructive",
-            title: "Failed to send booking",
-            description: "Please try again later.",
+            title: "Échec de l'envoi",
+            description: "Veuillez réessayer plus tard.",
           });
         }
       }
@@ -166,8 +165,8 @@ export default function ArtisanProfile() {
       {
         onSuccess: () => {
           toast({
-            title: "Review submitted",
-            description: "Thank you for your feedback!",
+            title: "Avis soumis",
+            description: "Merci pour votre retour !",
           });
           reviewForm.reset();
           queryClient.invalidateQueries({ queryKey: getListReviewsQueryKey({ artisanId }) });
@@ -175,8 +174,8 @@ export default function ArtisanProfile() {
         onError: () => {
           toast({
             variant: "destructive",
-            title: "Failed to submit review",
-            description: "Please try again later.",
+            title: "Échec de la soumission",
+            description: "Veuillez réessayer plus tard.",
           });
         }
       }
@@ -203,9 +202,9 @@ export default function ArtisanProfile() {
   if (!artisan) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-2xl font-bold mb-4">Artisan not found</h2>
+        <h2 className="text-2xl font-bold mb-4">Artisan introuvable</h2>
         <Button asChild>
-          <Link href="/artisans">Back to Artisans</Link>
+          <Link href="/artisans">Retour aux Artisans</Link>
         </Button>
       </div>
     );
@@ -216,14 +215,14 @@ export default function ArtisanProfile() {
       <div className="mb-6">
         <Link href="/artisans" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
           <ChevronLeft className="mr-1 h-4 w-4" />
-          Back to Search
+          Retour à la Recherche
         </Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content Area */}
+        {/* Zone de contenu principale */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Profile Header */}
+          {/* En-tête du profil */}
           <div className="bg-card border rounded-2xl p-6 md:p-8 shadow-sm">
             <div className="flex flex-col md:flex-row gap-6 items-start">
               <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-background shadow-md shrink-0">
@@ -241,14 +240,14 @@ export default function ArtisanProfile() {
                       <DialogTrigger asChild>
                         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
                           <Edit className="h-4 w-4" />
-                          <span className="sr-only">Edit Profile</span>
+                          <span className="sr-only">Modifier le Profil</span>
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[500px]">
                         <DialogHeader>
-                          <DialogTitle>Edit Profile</DialogTitle>
+                          <DialogTitle>Modifier le Profil</DialogTitle>
                           <DialogDescription>
-                            Update your professional information and contact details.
+                            Mettez à jour vos informations professionnelles et vos coordonnées.
                           </DialogDescription>
                         </DialogHeader>
                         <Form {...editForm}>
@@ -259,7 +258,7 @@ export default function ArtisanProfile() {
                                 name="phone"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel>Phone</FormLabel>
+                                    <FormLabel>Téléphone</FormLabel>
                                     <FormControl>
                                       <Input {...field} />
                                     </FormControl>
@@ -287,7 +286,7 @@ export default function ArtisanProfile() {
                                 name="priceRange"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel>Price Range</FormLabel>
+                                    <FormLabel>Tarifs</FormLabel>
                                     <FormControl>
                                       <Input {...field} />
                                     </FormControl>
@@ -300,7 +299,7 @@ export default function ArtisanProfile() {
                                 name="yearsExperience"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel>Years Experience</FormLabel>
+                                    <FormLabel>Années d'Expérience</FormLabel>
                                     <FormControl>
                                       <Input type="number" min="0" {...field} />
                                     </FormControl>
@@ -314,7 +313,7 @@ export default function ArtisanProfile() {
                               name="bio"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Bio</FormLabel>
+                                  <FormLabel>Présentation</FormLabel>
                                   <FormControl>
                                     <Textarea className="h-24 resize-none" {...field} />
                                   </FormControl>
@@ -324,7 +323,7 @@ export default function ArtisanProfile() {
                             />
                             <div className="flex justify-end pt-4">
                               <Button type="submit" disabled={updateArtisan.isPending}>
-                                {updateArtisan.isPending ? "Saving..." : "Save Changes"}
+                                {updateArtisan.isPending ? "Enregistrement..." : "Enregistrer"}
                               </Button>
                             </div>
                           </form>
@@ -335,7 +334,7 @@ export default function ArtisanProfile() {
                   {artisan.isVerified && (
                     <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100/80 border-green-200">
                       <ShieldCheck className="w-3.5 h-3.5 mr-1" />
-                      Verified Professional
+                      Professionnel Vérifié
                     </Badge>
                   )}
                 </div>
@@ -352,19 +351,19 @@ export default function ArtisanProfile() {
                   <div className="flex items-center">
                     <Star className="h-4 w-4 mr-1.5 text-accent fill-accent" />
                     <span className="font-medium text-foreground mr-1">{artisan.averageRating.toFixed(1)}</span>
-                    <span>({artisan.reviewCount} reviews)</span>
+                    <span>({artisan.reviewCount} avis)</span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-3 pt-2">
                   {artisan.priceRange && (
                     <Badge variant="outline" className="text-xs font-normal bg-muted/30">
-                      Price: {artisan.priceRange}
+                      Tarif : {artisan.priceRange}
                     </Badge>
                   )}
                   {artisan.yearsExperience && (
                     <Badge variant="outline" className="text-xs font-normal bg-muted/30">
-                      {artisan.yearsExperience} Years Experience
+                      {artisan.yearsExperience} ans d'expérience
                     </Badge>
                   )}
                 </div>
@@ -374,24 +373,24 @@ export default function ArtisanProfile() {
             <Separator className="my-6" />
             
             <div>
-              <h3 className="text-lg font-semibold mb-3">About</h3>
+              <h3 className="text-lg font-semibold mb-3">À propos</h3>
               <p className="text-muted-foreground whitespace-pre-line leading-relaxed">
-                {artisan.bio || "No bio provided by this artisan."}
+                {artisan.bio || "Cet artisan n'a pas encore renseigné sa présentation."}
               </p>
             </div>
           </div>
 
-          {/* Tabs for Reviews & Info */}
+          {/* Onglets Avis & Infos */}
           <Tabs defaultValue="reviews" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1">
-              <TabsTrigger value="reviews" className="data-[state=active]:bg-background data-[state=active]:shadow-sm">Reviews ({artisan.reviewCount})</TabsTrigger>
-              <TabsTrigger value="contact" className="data-[state=active]:bg-background data-[state=active]:shadow-sm">Contact Info</TabsTrigger>
+              <TabsTrigger value="reviews" className="data-[state=active]:bg-background data-[state=active]:shadow-sm">Avis ({artisan.reviewCount})</TabsTrigger>
+              <TabsTrigger value="contact" className="data-[state=active]:bg-background data-[state=active]:shadow-sm">Coordonnées</TabsTrigger>
             </TabsList>
             
             <TabsContent value="reviews" className="space-y-6">
               <div className="bg-card border rounded-xl p-6 shadow-sm">
                 <h3 className="text-lg font-semibold mb-6 flex items-center">
-                  Client Reviews
+                  Avis des Clients
                 </h3>
                 
                 {isReviewsLoading ? (
@@ -415,7 +414,7 @@ export default function ArtisanProfile() {
                           </div>
                         </div>
                         <div className="text-xs text-muted-foreground mb-3">
-                          {format(new Date(review.createdAt), "MMMM d, yyyy")}
+                          {format(new Date(review.createdAt), "d MMMM yyyy", { locale: fr })}
                         </div>
                         {review.comment && (
                           <p className="text-sm text-foreground/90">{review.comment}</p>
@@ -426,16 +425,16 @@ export default function ArtisanProfile() {
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Star className="h-8 w-8 text-muted mx-auto mb-3" />
-                    <p>No reviews yet for this artisan.</p>
+                    <p>Aucun avis pour cet artisan pour le moment.</p>
                   </div>
                 )}
               </div>
 
-              {/* Add Review Form */}
+              {/* Formulaire d'avis */}
               <Card className="shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-lg">Leave a Review</CardTitle>
-                  <CardDescription>Share your experience with {artisan.name}</CardDescription>
+                  <CardTitle className="text-lg">Laisser un Avis</CardTitle>
+                  <CardDescription>Partagez votre expérience avec {artisan.name}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Form {...reviewForm}>
@@ -446,7 +445,7 @@ export default function ArtisanProfile() {
                           name="clientName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Your Name</FormLabel>
+                              <FormLabel>Votre Nom</FormLabel>
                               <FormControl>
                                 <Input placeholder="Amadou Diallo" {...field} />
                               </FormControl>
@@ -459,19 +458,19 @@ export default function ArtisanProfile() {
                           name="rating"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Rating (1-5)</FormLabel>
+                              <FormLabel>Note (1-5)</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
                                 <FormControl>
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Select a rating" />
+                                    <SelectValue placeholder="Choisir une note" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {[5, 4, 3, 2, 1].map((num) => (
-                                    <SelectItem key={num} value={String(num)}>
-                                      {num} - {num === 5 ? 'Excellent' : num === 1 ? 'Poor' : 'Stars'}
-                                    </SelectItem>
-                                  ))}
+                                  <SelectItem value="5">5 - Excellent</SelectItem>
+                                  <SelectItem value="4">4 - Très bien</SelectItem>
+                                  <SelectItem value="3">3 - Bien</SelectItem>
+                                  <SelectItem value="2">2 - Passable</SelectItem>
+                                  <SelectItem value="1">1 - Insuffisant</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -484,10 +483,10 @@ export default function ArtisanProfile() {
                         name="comment"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Your Review (Optional)</FormLabel>
+                            <FormLabel>Votre Avis (Optionnel)</FormLabel>
                             <FormControl>
                               <Textarea 
-                                placeholder="Describe the work they did and how it went..." 
+                                placeholder="Décrivez le travail effectué et comment cela s'est passé..." 
                                 className="resize-none" 
                                 {...field} 
                               />
@@ -501,7 +500,7 @@ export default function ArtisanProfile() {
                         disabled={createReview.isPending}
                         className="bg-primary"
                       >
-                        {createReview.isPending ? "Submitting..." : "Submit Review"}
+                        {createReview.isPending ? "Envoi en cours..." : "Soumettre l'Avis"}
                       </Button>
                     </form>
                   </Form>
@@ -512,14 +511,14 @@ export default function ArtisanProfile() {
             <TabsContent value="contact">
               <Card className="shadow-sm">
                 <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                  <CardDescription>Direct contact details for this artisan</CardDescription>
+                  <CardTitle>Coordonnées</CardTitle>
+                  <CardDescription>Informations de contact directes pour cet artisan</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center p-4 bg-muted/30 rounded-lg border">
                     <Phone className="h-5 w-5 mr-4 text-primary" />
                     <div>
-                      <p className="text-sm text-muted-foreground font-medium">Phone Number</p>
+                      <p className="text-sm text-muted-foreground font-medium">Numéro de Téléphone</p>
                       <p className="text-lg font-medium">{artisan.phone}</p>
                     </div>
                   </div>
@@ -527,13 +526,13 @@ export default function ArtisanProfile() {
                     <div className="flex items-center p-4 bg-muted/30 rounded-lg border">
                       <Mail className="h-5 w-5 mr-4 text-primary" />
                       <div>
-                        <p className="text-sm text-muted-foreground font-medium">Email Address</p>
+                        <p className="text-sm text-muted-foreground font-medium">Adresse Email</p>
                         <p className="text-lg font-medium">{artisan.email}</p>
                       </div>
                     </div>
                   )}
                   <div className="p-4 rounded-lg bg-secondary/10 border border-secondary/20 text-secondary-foreground text-sm mt-4">
-                    <strong>Pro tip:</strong> We recommend requesting a booking through the platform first to keep a record of your request, but you can always call them directly for urgent needs.
+                    <strong>Conseil :</strong> Nous vous recommandons d'envoyer une demande de réservation via la plateforme pour conserver une trace de votre demande. Vous pouvez aussi appeler directement en cas d'urgence.
                   </div>
                 </CardContent>
               </Card>
@@ -541,14 +540,14 @@ export default function ArtisanProfile() {
           </Tabs>
         </div>
 
-        {/* Sidebar - Booking Form */}
+        {/* Colonne latérale — Formulaire de Réservation */}
         <div className="lg:col-span-1">
           <div className="sticky top-24">
             <Card className="border-primary/20 shadow-md">
               <CardHeader className="bg-primary/5 border-b pb-4">
-                <CardTitle className="text-xl font-serif">Request a Service</CardTitle>
+                <CardTitle className="text-xl font-serif">Demander un Service</CardTitle>
                 <CardDescription>
-                  Send a booking request directly to {artisan.name}
+                  Envoyez une demande directement à {artisan.name}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -559,10 +558,10 @@ export default function ArtisanProfile() {
                       name="serviceDescription"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>What do you need help with?</FormLabel>
+                          <FormLabel>De quoi avez-vous besoin ?</FormLabel>
                           <FormControl>
                             <Textarea 
-                              placeholder="e.g. My kitchen sink is leaking and needs repair..." 
+                              placeholder="ex. Mon évier de cuisine fuit et doit être réparé..." 
                               className="h-24 resize-none"
                               {...field} 
                             />
@@ -578,7 +577,7 @@ export default function ArtisanProfile() {
                         name="clientName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Your Full Name</FormLabel>
+                            <FormLabel>Votre Nom Complet</FormLabel>
                             <FormControl>
                               <Input placeholder="Fatou Ndiaye" {...field} />
                             </FormControl>
@@ -592,7 +591,7 @@ export default function ArtisanProfile() {
                         name="clientPhone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
+                            <FormLabel>Numéro de Téléphone</FormLabel>
                             <FormControl>
                               <Input placeholder="77 XXX XX XX" type="tel" {...field} />
                             </FormControl>
@@ -606,7 +605,7 @@ export default function ArtisanProfile() {
                         name="city"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Your City/Neighborhood</FormLabel>
+                            <FormLabel>Votre Ville / Quartier</FormLabel>
                             <FormControl>
                               <Input placeholder="Dakar, Almadies" {...field} />
                             </FormControl>
@@ -620,7 +619,7 @@ export default function ArtisanProfile() {
                         name="scheduledDate"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Preferred Date (Optional)</FormLabel>
+                            <FormLabel>Date Souhaitée (Optionnel)</FormLabel>
                             <FormControl>
                               <div className="relative">
                                 <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -638,10 +637,10 @@ export default function ArtisanProfile() {
                       className="w-full h-12 text-lg font-medium mt-6 bg-secondary text-secondary-foreground hover:bg-secondary/90"
                       disabled={createBooking.isPending}
                     >
-                      {createBooking.isPending ? "Sending Request..." : "Send Request"}
+                      {createBooking.isPending ? "Envoi en cours..." : "Envoyer la Demande"}
                     </Button>
                     <p className="text-xs text-center text-muted-foreground mt-4">
-                      No payment required at this stage. You'll discuss pricing directly with the artisan.
+                      Aucun paiement requis à cette étape. Vous discuterez du tarif directement avec l'artisan.
                     </p>
                   </form>
                 </Form>

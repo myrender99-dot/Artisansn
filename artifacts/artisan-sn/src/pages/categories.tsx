@@ -1,19 +1,18 @@
 import { useListServices } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import { Wrench, ArrowRight, Home, Zap, Scissors, Car, Paintbrush, Briefcase } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Map service names to icons for visual variety
 const getIconForCategory = (name: string) => {
   const lowerName = name.toLowerCase();
-  if (lowerName.includes('plumb')) return <Wrench className="h-8 w-8" />;
-  if (lowerName.includes('electric')) return <Zap className="h-8 w-8" />;
-  if (lowerName.includes('tailor') || lowerName.includes('sew')) return <Scissors className="h-8 w-8" />;
-  if (lowerName.includes('mechanic') || lowerName.includes('auto')) return <Car className="h-8 w-8" />;
-  if (lowerName.includes('paint') || lowerName.includes('decor')) return <Paintbrush className="h-8 w-8" />;
-  if (lowerName.includes('carpenter') || lowerName.includes('wood')) return <Home className="h-8 w-8" />;
+  if (lowerName.includes('plomb')) return <Wrench className="h-8 w-8" />;
+  if (lowerName.includes('electr') || lowerName.includes('électr')) return <Zap className="h-8 w-8" />;
+  if (lowerName.includes('coutur') || lowerName.includes('taill')) return <Scissors className="h-8 w-8" />;
+  if (lowerName.includes('mécan') || lowerName.includes('auto')) return <Car className="h-8 w-8" />;
+  if (lowerName.includes('peint')) return <Paintbrush className="h-8 w-8" />;
+  if (lowerName.includes('menuis') || lowerName.includes('bois')) return <Home className="h-8 w-8" />;
   return <Briefcase className="h-8 w-8" />;
 };
 
@@ -23,9 +22,9 @@ export default function Categories() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Service Categories</h1>
+        <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Catégories de Services</h1>
         <p className="text-lg text-muted-foreground">
-          Browse our extensive directory of skilled tradespeople across Senegal. Whatever your needs, we have the right professional for the job.
+          Parcourez notre répertoire complet de professionnels qualifiés dans tout le Sénégal. Quels que soient vos besoins, nous avons le bon expert pour vous.
         </p>
       </div>
 
@@ -46,7 +45,7 @@ export default function Categories() {
                     {category.name}
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    {category.artisanCount} {category.artisanCount === 1 ? 'professional' : 'professionals'} available
+                    {category.artisanCount} {category.artisanCount === 1 ? 'professionnel disponible' : 'professionnels disponibles'}
                   </p>
                   
                   <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
@@ -58,20 +57,20 @@ export default function Categories() {
           ))
         ) : (
           <div className="col-span-full py-20 text-center text-muted-foreground bg-muted/20 rounded-xl">
-            No categories found.
+            Aucune catégorie trouvée.
           </div>
         )}
       </div>
 
       <div className="mt-20 bg-primary/5 border border-primary/10 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
         <div>
-          <h2 className="text-2xl font-serif font-bold mb-2">Can't find what you're looking for?</h2>
+          <h2 className="text-2xl font-serif font-bold mb-2">Vous ne trouvez pas ce que vous cherchez ?</h2>
           <p className="text-muted-foreground max-w-md">
-            Our marketplace is constantly growing. Try searching for specific keywords or reach out to general contractors.
+            Notre marketplace est en constante croissance. Essayez de rechercher des mots-clés spécifiques ou parcourez tous nos artisans.
           </p>
         </div>
         <Button asChild size="lg" className="shrink-0 bg-primary">
-          <Link href="/artisans">Search All Artisans</Link>
+          <Link href="/artisans">Rechercher tous les Artisans</Link>
         </Button>
       </div>
     </div>

@@ -13,36 +13,36 @@ export function Footer() {
             </span>
           </Link>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            The trusted digital bridge between everyday Senegalese families and skilled local artisans. Connecting communities, building trust.
+            Le pont numérique de confiance entre les familles sénégalaises et les artisans locaux qualifiés. Connecter les communautés, construire la confiance.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Explore</h4>
+            <h4 className="text-sm font-semibold">Explorer</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/artisans" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Find an Artisan
+                  Trouver un Artisan
                 </Link>
               </li>
               <li>
                 <Link href="/categories" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  All Services
+                  Tous les Services
                 </Link>
               </li>
               <li>
                 <Link href="/bookings" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Manage Bookings
+                  Gérer les Réservations
                 </Link>
               </li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold">For Artisans</h4>
+            <h4 className="text-sm font-semibold">Pour les Artisans</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/register-artisan" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Join the Platform
+                  Rejoindre la Plateforme
                 </Link>
               </li>
             </ul>
@@ -51,7 +51,7 @@ export function Footer() {
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} ArtisanSN. Crafted with <Heart className="inline h-3 w-3 text-destructive mx-1" /> in Senegal.
+          © {new Date().getFullYear()} ArtisanSN. Fait avec <Heart className="inline h-3 w-3 text-destructive mx-1" /> au Sénégal.
         </p>
       </div>
     </footer>

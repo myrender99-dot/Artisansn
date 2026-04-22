@@ -3,18 +3,16 @@ import { useListBookings, useUpdateBooking, useListArtisans } from "@workspace/a
 import { useQueryClient } from "@tanstack/react-query";
 import { getListBookingsQueryKey } from "@workspace/api-client-react";
 import { format } from "date-fns";
-import { Calendar, MapPin, User, Phone, CheckCircle2, Clock, XCircle, FileText, ChevronDown } from "lucide-react";
+import { fr } from "date-fns/locale";
+import { Calendar, MapPin, User, Phone, CheckCircle2, Clock, XCircle, FileText } from "lucide-react";
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 
-// For demo purposes, we're letting users view bookings either as a specific artisan or as "all" 
-// (simulating an admin or artisan view)
 export default function Bookings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -25,27 +23,32 @@ export default function Bookings() {
   
   const { data: bookingsData, isLoading } = useListBookings({
     artisanId: selectedArtisanId !== "all" ? parseInt(selectedArtisanId) : undefined,
-    // Note: status filter on API requires exact enum, we'll filter client-side for simplicity if 'all'
   });
 
   const updateBooking = useUpdateBooking();
 
   const handleStatusUpdate = (id: number, newStatus: "pending" | "confirmed" | "completed" | "cancelled") => {
+    const labels: Record<string, string> = {
+      pending: "en attente",
+      confirmed: "confirmée",
+      completed: "terminée",
+      cancelled: "annulée",
+    };
     updateBooking.mutate(
       { id, data: { status: newStatus } },
       {
         onSuccess: () => {
           toast({
-            title: "Status updated",
-            description: `Booking is now ${newStatus}.`,
+            title: "Statut mis à jour",
+            description: `La réservation est maintenant ${labels[newStatus]}.`,
           });
           queryClient.invalidateQueries({ queryKey: getListBookingsQueryKey() });
         },
         onError: () => {
           toast({
             variant: "destructive",
-            title: "Update failed",
-            description: "Could not update the booking status.",
+            title: "Échec de la mise à jour",
+            description: "Impossible de mettre à jour le statut de la réservation.",
           });
         }
       }
@@ -55,13 +58,13 @@ export default function Bookings() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
-        return <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200"><Clock className="w-3 h-3 mr-1"/> Pending</Badge>;
+        return <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200"><Clock className="w-3 h-3 mr-1"/> En attente</Badge>;
       case "confirmed":
-        return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200"><CheckCircle2 className="w-3 h-3 mr-1"/> Confirmed</Badge>;
+        return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200"><CheckCircle2 className="w-3 h-3 mr-1"/> Confirmée</Badge>;
       case "completed":
-        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200"><CheckCircle2 className="w-3 h-3 mr-1"/> Completed</Badge>;
+        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200"><CheckCircle2 className="w-3 h-3 mr-1"/> Terminée</Badge>;
       case "cancelled":
-        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200"><XCircle className="w-3 h-3 mr-1"/> Cancelled</Badge>;
+        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200"><XCircle className="w-3 h-3 mr-1"/> Annulée</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -80,22 +83,22 @@ export default function Bookings() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Booking Management</h1>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Gestion des Réservations</h1>
         <p className="text-muted-foreground">
-          View and manage service requests
+          Consultez et gérez les demandes de service
         </p>
       </div>
 
-      {/* Demo Controls */}
+      {/* Contrôles de filtrage */}
       <div className="bg-muted/40 p-4 rounded-xl mb-8 flex flex-col sm:flex-row gap-4 border">
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">View bookings for (Demo mode):</label>
+          <label className="text-sm font-medium">Voir les réservations de :</label>
           <Select value={selectedArtisanId} onValueChange={setSelectedArtisanId}>
             <SelectTrigger className="bg-background">
-              <SelectValue placeholder="Select an artisan" />
+              <SelectValue placeholder="Choisir un artisan" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Artisans (Admin View)</SelectItem>
+              <SelectItem value="all">Tous les Artisans (Vue Admin)</SelectItem>
               {artisans?.artisans.map(a => (
                 <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>
               ))}
@@ -103,17 +106,17 @@ export default function Bookings() {
           </Select>
         </div>
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">Filter by status:</label>
+          <label className="text-sm font-medium">Filtrer par statut :</label>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
             <SelectTrigger className="bg-background">
-              <SelectValue placeholder="All Statuses" />
+              <SelectValue placeholder="Tous les statuts" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="confirmed">Confirmed</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">Tous les statuts</SelectItem>
+              <SelectItem value="pending">En attente</SelectItem>
+              <SelectItem value="confirmed">Confirmée</SelectItem>
+              <SelectItem value="completed">Terminée</SelectItem>
+              <SelectItem value="cancelled">Annulée</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -138,13 +141,13 @@ export default function Bookings() {
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center">
                       <Calendar className="w-4 h-4 mr-1.5" />
-                      Requested: {format(new Date(booking.createdAt), "MMM d, yyyy")}
+                      Demandé le {format(new Date(booking.createdAt), "d MMM yyyy", { locale: fr })}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="space-y-3">
-                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Client Details</h4>
+                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Infos Client</h4>
                       <div className="space-y-2">
                         <div className="flex items-start">
                           <User className="w-4 h-4 mr-2 mt-0.5 text-muted-foreground shrink-0" />
@@ -164,16 +167,16 @@ export default function Bookings() {
                     </div>
 
                     <div className="space-y-3">
-                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Job Details</h4>
+                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Détails du Travail</h4>
                       <div className="space-y-2">
                         <div className="flex items-start">
                           <User className="w-4 h-4 mr-2 mt-0.5 text-muted-foreground shrink-0" />
-                          <span>Artisan: <span className="font-medium">{getArtisanName(booking.artisanId)}</span></span>
+                          <span>Artisan : <span className="font-medium">{getArtisanName(booking.artisanId)}</span></span>
                         </div>
                         {booking.scheduledDate && (
                           <div className="flex items-start">
                             <Clock className="w-4 h-4 mr-2 mt-0.5 text-muted-foreground shrink-0" />
-                            <span>Preferred Date: {booking.scheduledDate}</span>
+                            <span>Date souhaitée : {booking.scheduledDate}</span>
                           </div>
                         )}
                       </div>
@@ -189,7 +192,7 @@ export default function Bookings() {
                 </div>
 
                 <div className="bg-muted/20 md:w-64 border-t md:border-t-0 md:border-l border-border/50 p-6 flex flex-col justify-center">
-                  <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 text-center">Update Status</h4>
+                  <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 text-center">Mettre à Jour</h4>
                   
                   {booking.status === "pending" && (
                     <div className="space-y-2">
@@ -198,7 +201,7 @@ export default function Bookings() {
                         onClick={() => handleStatusUpdate(booking.id, "confirmed")}
                         disabled={updateBooking.isPending}
                       >
-                        Confirm Booking
+                        Confirmer
                       </Button>
                       <Button 
                         variant="outline" 
@@ -206,7 +209,7 @@ export default function Bookings() {
                         onClick={() => handleStatusUpdate(booking.id, "cancelled")}
                         disabled={updateBooking.isPending}
                       >
-                        Decline
+                        Refuser
                       </Button>
                     </div>
                   )}
@@ -218,7 +221,7 @@ export default function Bookings() {
                         onClick={() => handleStatusUpdate(booking.id, "completed")}
                         disabled={updateBooking.isPending}
                       >
-                        Mark Completed
+                        Marquer Terminé
                       </Button>
                       <Button 
                         variant="outline" 
@@ -226,7 +229,7 @@ export default function Bookings() {
                         onClick={() => handleStatusUpdate(booking.id, "cancelled")}
                         disabled={updateBooking.isPending}
                       >
-                        Cancel Booking
+                        Annuler
                       </Button>
                     </div>
                   )}
@@ -234,7 +237,7 @@ export default function Bookings() {
                   {(booking.status === "completed" || booking.status === "cancelled") && (
                     <div className="text-center text-sm text-muted-foreground py-4 flex flex-col items-center">
                       <CheckCircle2 className="w-8 h-8 mb-2 opacity-50" />
-                      This booking is resolved and cannot be updated.
+                      Cette réservation est clôturée.
                     </div>
                   )}
                 </div>
@@ -244,9 +247,9 @@ export default function Bookings() {
         ) : (
           <div className="text-center py-20 bg-muted/20 rounded-xl border border-dashed">
             <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h3 className="text-xl font-medium mb-2">No bookings found</h3>
+            <h3 className="text-xl font-medium mb-2">Aucune réservation trouvée</h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              There are no booking requests matching your current filters.
+              Il n'y a aucune demande de service correspondant à vos filtres actuels.
             </p>
           </div>
         )}

@@ -28,12 +28,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      {/* Hero Section */}
+      {/* Section Héro */}
       <section className="relative py-24 md:py-32 overflow-hidden bg-primary text-primary-foreground">
         <div className="absolute inset-0 z-0">
           <img 
             src="/hero-bg.png" 
-            alt="Dakar market" 
+            alt="Marché de Dakar" 
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-primary/40" />
@@ -41,13 +41,13 @@ export default function Home() {
         
         <div className="container relative z-10 mx-auto px-4 flex flex-col items-center text-center">
           <Badge className="mb-6 bg-secondary text-secondary-foreground hover:bg-secondary/90 border-none px-4 py-1 text-sm font-medium">
-            Senegal's Trusted Marketplace
+            La Marketplace de Confiance au Sénégal
           </Badge>
           <h1 className="text-4xl md:text-6xl lg:text-7xl max-w-4xl mb-6 text-white font-serif leading-tight">
-            Find the perfect artisan for your next project
+            Trouvez l'artisan idéal pour votre projet
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mb-10 leading-relaxed">
-            Plumbers, tailors, electricians, and more. Connect with skilled, verified tradespeople in your community today.
+            Plombiers, couturiers, électriciens et bien plus. Connectez-vous avec des professionnels qualifiés et vérifiés de votre communauté.
           </p>
           
           <form onSubmit={handleSearch} className="w-full max-w-2xl flex flex-col sm:flex-row gap-2">
@@ -56,55 +56,55 @@ export default function Home() {
               <Input 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="What service do you need?" 
+                placeholder="Quel service recherchez-vous ?" 
                 className="pl-10 h-14 bg-background text-foreground text-lg rounded-xl shadow-lg border-none focus-visible:ring-secondary"
               />
             </div>
             <Button type="submit" size="lg" className="h-14 px-8 text-lg rounded-xl shadow-lg bg-secondary text-secondary-foreground hover:bg-secondary/90">
-              Search
+              Rechercher
             </Button>
           </form>
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Section Statistiques */}
       <section className="py-12 bg-muted/30 border-y">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
             <StatCard 
               icon={<Users className="h-6 w-6 text-secondary" />}
               value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.totalArtisans.toString()}
-              label="Verified Artisans"
+              label="Artisans Inscrits"
             />
             <StatCard 
               icon={<CheckCircle className="h-6 w-6 text-green-500" />}
               value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.completedJobs.toString()}
-              label="Completed Jobs"
+              label="Travaux Réalisés"
             />
             <StatCard 
               icon={<MapPin className="h-6 w-6 text-accent" />}
               value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.totalCities.toString()}
-              label="Cities Covered"
+              label="Villes Couvertes"
             />
             <StatCard 
               icon={<Wrench className="h-6 w-6 text-primary" />}
               value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.totalCategories.toString()}
-              label="Service Categories"
+              label="Catégories de Services"
             />
           </div>
         </div>
       </section>
 
-      {/* Top Categories */}
+      {/* Services Populaires */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-3xl font-serif text-foreground mb-2">Popular Services</h2>
-              <p className="text-muted-foreground">Find exactly what you're looking for</p>
+              <h2 className="text-3xl font-serif text-foreground mb-2">Services Populaires</h2>
+              <p className="text-muted-foreground">Trouvez exactement ce que vous cherchez</p>
             </div>
             <Button variant="outline" asChild className="hidden md:inline-flex">
-              <Link href="/categories">View All Categories</Link>
+              <Link href="/categories">Voir Toutes les Catégories</Link>
             </Button>
           </div>
 
@@ -130,22 +130,22 @@ export default function Home() {
           </div>
           <div className="mt-8 text-center md:hidden">
             <Button variant="outline" asChild>
-              <Link href="/categories">View All Categories</Link>
+              <Link href="/categories">Voir Toutes les Catégories</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Top Rated Artisans */}
+      {/* Artisans Mieux Notés */}
       <section className="py-20 bg-muted/20">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-3xl font-serif text-foreground mb-2">Top Rated Artisans</h2>
-              <p className="text-muted-foreground">The best professionals in our community</p>
+              <h2 className="text-3xl font-serif text-foreground mb-2">Artisans les Mieux Notés</h2>
+              <p className="text-muted-foreground">Les meilleurs professionnels de notre communauté</p>
             </div>
             <Button variant="outline" asChild className="hidden md:inline-flex">
-              <Link href="/artisans">Browse All</Link>
+              <Link href="/artisans">Voir Tous</Link>
             </Button>
           </div>
 
@@ -160,22 +160,22 @@ export default function Home() {
               ))
             ) : (
               <div className="col-span-full text-center py-10 text-muted-foreground">
-                No artisans found.
+                Aucun artisan trouvé.
               </div>
             )}
           </div>
         </div>
       </section>
       
-      {/* CTA Section */}
+      {/* Section Appel à l'Action */}
       <section className="py-24 bg-primary text-primary-foreground text-center px-4">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-5xl font-serif mb-6">Are you a skilled artisan?</h2>
+          <h2 className="text-3xl md:text-5xl font-serif mb-6">Vous êtes un artisan qualifié ?</h2>
           <p className="text-lg md:text-xl text-primary-foreground/80 mb-10">
-            Join thousands of professionals growing their business on ArtisanSN. Register today and start receiving booking requests from clients in your area.
+            Rejoignez des milliers de professionnels qui développent leur activité sur ArtisanSN. Inscrivez-vous gratuitement et commencez à recevoir des demandes de clients dans votre ville.
           </p>
           <Button asChild size="lg" className="h-14 px-8 text-lg rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
-            <Link href="/register-artisan">Join the Platform</Link>
+            <Link href="/register-artisan">Rejoindre la Plateforme</Link>
           </Button>
         </div>
       </section>
@@ -198,4 +198,3 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode, value: React.
     </div>
   );
 }
-

@@ -4,7 +4,7 @@ import { useCreateArtisan, useListServices } from "@workspace/api-client-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Briefcase, MapPin, User, Phone, CheckCircle2 } from "lucide-react";
+import { Briefcase, User, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,13 +15,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 
 const artisanSchema = z.object({
-  name: z.string().min(2, "Full name must be at least 2 characters"),
-  category: z.string().min(1, "Please select a profession"),
-  city: z.string().min(2, "City is required"),
-  phone: z.string().min(8, "Valid phone number is required"),
-  email: z.string().email("Invalid email address").optional().or(z.literal("")),
-  bio: z.string().min(20, "Please provide a brief description of your services").max(500),
-  yearsExperience: z.coerce.number().min(0, "Experience cannot be negative").max(60).optional(),
+  name: z.string().min(2, "Le nom complet doit contenir au moins 2 caractères"),
+  category: z.string().min(1, "Veuillez sélectionner votre métier"),
+  city: z.string().min(2, "La ville est obligatoire"),
+  phone: z.string().min(8, "Un numéro de téléphone valide est requis"),
+  email: z.string().email("Adresse email invalide").optional().or(z.literal("")),
+  bio: z.string().min(20, "Veuillez décrire vos services en au moins 20 caractères").max(500),
+  yearsExperience: z.coerce.number().min(0, "L'expérience ne peut pas être négative").max(60).optional(),
   priceRange: z.string().optional(),
 });
 
@@ -42,7 +42,7 @@ export default function RegisterArtisan() {
       phone: "",
       email: "",
       bio: "",
-      priceRange: "Negotiable",
+      priceRange: "Négociable",
     },
   });
 
@@ -55,19 +55,18 @@ export default function RegisterArtisan() {
         onSuccess: (data) => {
           setIsSuccess(true);
           toast({
-            title: "Registration successful!",
-            description: "Welcome to ArtisanSN. Your profile is now live.",
+            title: "Inscription réussie !",
+            description: "Bienvenue sur ArtisanSN. Votre profil est maintenant en ligne.",
           });
-          // Redirect after a brief delay
           setTimeout(() => {
             setLocation(`/artisans/${data.id}`);
           }, 3000);
         },
-        onError: (err) => {
+        onError: () => {
           toast({
             variant: "destructive",
-            title: "Registration failed",
-            description: "There was an error creating your profile. Please try again.",
+            title: "Échec de l'inscription",
+            description: "Une erreur est survenue lors de la création de votre profil. Veuillez réessayer.",
           });
         }
       }
@@ -80,9 +79,9 @@ export default function RegisterArtisan() {
         <div className="bg-primary/5 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="h-12 w-12 text-primary" />
         </div>
-        <h1 className="text-3xl font-serif font-bold text-foreground mb-4">Welcome to ArtisanSN!</h1>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-4">Bienvenue sur ArtisanSN !</h1>
         <p className="text-lg text-muted-foreground mb-8">
-          Your profile has been created successfully. You are being redirected to your new profile page...
+          Votre profil a été créé avec succès. Vous allez être redirigé vers votre nouvelle page de profil...
         </p>
       </div>
     );
@@ -91,27 +90,27 @@ export default function RegisterArtisan() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Join the Platform</h1>
+        <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Rejoindre la Plateforme</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Create your professional profile on ArtisanSN to connect with thousands of clients looking for your skills. Registration is free.
+          Créez votre profil professionnel sur ArtisanSN pour vous connecter avec des milliers de clients qui recherchent vos compétences. L'inscription est gratuite.
         </p>
       </div>
 
       <Card className="border-border shadow-md">
         <CardHeader className="bg-muted/30 border-b pb-6">
-          <CardTitle className="text-2xl font-serif">Artisan Profile Details</CardTitle>
+          <CardTitle className="text-2xl font-serif">Informations du Profil</CardTitle>
           <CardDescription>
-            This information will be displayed publicly to potential clients.
+            Ces informations seront affichées publiquement aux clients potentiels.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               
-              {/* Personal Info Section */}
+              {/* Section Infos Personnelles */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold flex items-center text-foreground">
-                  <User className="w-5 h-5 mr-2 text-primary" /> Personal Information
+                  <User className="w-5 h-5 mr-2 text-primary" /> Informations Personnelles
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
@@ -119,9 +118,9 @@ export default function RegisterArtisan() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Full Name</FormLabel>
+                        <FormLabel>Nom Complet</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. Moussa Ndiaye" {...field} />
+                          <Input placeholder="ex. Moussa Ndiaye" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -133,11 +132,11 @@ export default function RegisterArtisan() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
+                        <FormLabel>Numéro de Téléphone</FormLabel>
                         <FormControl>
                           <Input placeholder="77 XXX XX XX" type="tel" {...field} />
                         </FormControl>
-                        <FormDescription>Clients will use this to contact you.</FormDescription>
+                        <FormDescription>Les clients utiliseront ce numéro pour vous contacter.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -148,9 +147,9 @@ export default function RegisterArtisan() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email Address (Optional)</FormLabel>
+                        <FormLabel>Adresse Email (Optionnel)</FormLabel>
                         <FormControl>
-                          <Input placeholder="moussa@example.com" type="email" {...field} />
+                          <Input placeholder="moussa@exemple.com" type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -162,11 +161,11 @@ export default function RegisterArtisan() {
                     name="city"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Primary City</FormLabel>
+                        <FormLabel>Ville Principale</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select your city" />
+                              <SelectValue placeholder="Choisissez votre ville" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -182,10 +181,10 @@ export default function RegisterArtisan() {
                 </div>
               </div>
 
-              {/* Professional Info Section */}
+              {/* Section Infos Professionnelles */}
               <div className="space-y-4 pt-4 border-t">
                 <h3 className="text-lg font-semibold flex items-center text-foreground">
-                  <Briefcase className="w-5 h-5 mr-2 text-primary" /> Professional Details
+                  <Briefcase className="w-5 h-5 mr-2 text-primary" /> Informations Professionnelles
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
@@ -193,11 +192,11 @@ export default function RegisterArtisan() {
                     name="category"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Profession / Trade</FormLabel>
+                        <FormLabel>Métier / Spécialité</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger disabled={isServicesLoading}>
-                              <SelectValue placeholder="Select your trade" />
+                              <SelectValue placeholder="Choisissez votre métier" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -218,9 +217,9 @@ export default function RegisterArtisan() {
                     name="yearsExperience"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Years of Experience (Optional)</FormLabel>
+                        <FormLabel>Années d'Expérience (Optionnel)</FormLabel>
                         <FormControl>
-                          <Input type="number" min="0" placeholder="e.g. 5" {...field} />
+                          <Input type="number" min="0" placeholder="ex. 5" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -232,11 +231,11 @@ export default function RegisterArtisan() {
                     name="priceRange"
                     render={({ field }) => (
                       <FormItem className="md:col-span-2">
-                        <FormLabel>Pricing Policy</FormLabel>
+                        <FormLabel>Politique Tarifaire</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. Negotiable, Fixed price, Hourly rate..." {...field} />
+                          <Input placeholder="ex. Négociable, Prix fixe, Tarif horaire..." {...field} />
                         </FormControl>
-                        <FormDescription>How do you typically charge for your services?</FormDescription>
+                        <FormDescription>Comment facturez-vous généralement vos services ?</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -247,15 +246,15 @@ export default function RegisterArtisan() {
                     name="bio"
                     render={({ field }) => (
                       <FormItem className="md:col-span-2">
-                        <FormLabel>Professional Bio</FormLabel>
+                        <FormLabel>Présentation Professionnelle</FormLabel>
                         <FormControl>
                           <Textarea 
-                            placeholder="Tell clients about your expertise, the services you offer, and why they should choose you..." 
+                            placeholder="Parlez de votre expertise, des services que vous proposez et pourquoi les clients devraient vous choisir..." 
                             className="h-32 resize-none"
                             {...field} 
                           />
                         </FormControl>
-                        <FormDescription>Minimum 20 characters.</FormDescription>
+                        <FormDescription>Minimum 20 caractères.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -270,14 +269,14 @@ export default function RegisterArtisan() {
                   onClick={() => setLocation("/")}
                   className="w-full sm:w-auto"
                 >
-                  Cancel
+                  Annuler
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={createArtisan.isPending}
                   className="w-full sm:w-auto bg-primary text-primary-foreground min-w-[200px]"
                 >
-                  {createArtisan.isPending ? "Creating Profile..." : "Complete Registration"}
+                  {createArtisan.isPending ? "Création en cours..." : "Finaliser l'Inscription"}
                 </Button>
               </div>
             </form>

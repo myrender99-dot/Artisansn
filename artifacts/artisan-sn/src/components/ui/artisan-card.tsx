@@ -42,7 +42,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
             </div>
             {artisan.isVerified && (
               <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100/80 border-green-200 shrink-0">
-                Verified
+                Vérifié
               </Badge>
             )}
           </div>
@@ -57,7 +57,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
           <div className="flex items-center text-sm">
             <Star className="h-4 w-4 mr-1.5 shrink-0 fill-accent text-accent" />
             <span className="font-medium mr-1">{artisan.averageRating.toFixed(1)}</span>
-            <span className="text-muted-foreground">({artisan.reviewCount} reviews)</span>
+            <span className="text-muted-foreground">({artisan.reviewCount} avis)</span>
           </div>
           {artisan.priceRange && (
             <div className="text-sm font-medium mt-2 bg-muted/50 inline-flex w-fit px-2 py-0.5 rounded text-foreground/80">
@@ -68,7 +68,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
       </CardContent>
       <CardFooter className="pt-0">
         <Button asChild className="w-full font-semibold">
-          <Link href={`/artisans/${artisan.id}`}>View Profile</Link>
+          <Link href={`/artisans/${artisan.id}`}>Voir le Profil</Link>
         </Button>
       </CardFooter>
     </Card>

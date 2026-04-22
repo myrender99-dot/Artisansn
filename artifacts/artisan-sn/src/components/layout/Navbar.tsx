@@ -18,7 +18,7 @@ export function Navbar() {
               href="/artisans"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Find an Artisan
+              Trouver un Artisan
             </Link>
             <Link
               href="/categories"
@@ -30,16 +30,16 @@ export function Navbar() {
               href="/bookings"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              My Bookings
+              Mes Réservations
             </Link>
           </nav>
         </div>
         <div className="flex items-center space-x-4">
           <Button asChild variant="outline" className="hidden sm:inline-flex">
-            <Link href="/register-artisan">Become an Artisan</Link>
+            <Link href="/register-artisan">Devenir Artisan</Link>
           </Button>
           <Button asChild>
-            <Link href="/artisans">Book Now</Link>
+            <Link href="/artisans">Réserver</Link>
           </Button>
         </div>
       </div>
