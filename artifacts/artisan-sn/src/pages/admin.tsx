@@ -120,7 +120,7 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
             <ShieldCheck className="h-6 w-6 text-primary" />
           </div>
-          <CardTitle>Administration ArtisanSN</CardTitle>
+          <CardTitle>Administration Sunu Artisans</CardTitle>
           <p className="text-sm text-muted-foreground">Connectez-vous pour gérer la plateforme</p>
         </CardHeader>
         <CardContent>

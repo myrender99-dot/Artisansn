@@ -24,7 +24,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-2">
             <Hammer className="h-6 w-6 text-primary" />
             <span className="font-serif font-bold text-xl inline-block text-primary">
-              ArtisanSN
+              Sunu Artisans
             </span>
           </Link>
           <nav className="hidden lg:flex gap-6">
@@ -66,7 +66,7 @@ export function Navbar() {
               <SheetHeader>
                 <SheetTitle className="text-left flex items-center gap-2">
                   <Hammer className="h-5 w-5 text-primary" />
-                  ArtisanSN
+                  Sunu Artisans
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-6 flex flex-col gap-1 px-2">

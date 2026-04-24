@@ -172,7 +172,7 @@ export default function Home() {
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl md:text-5xl font-serif mb-6">Vous êtes un artisan qualifié ?</h2>
           <p className="text-lg md:text-xl text-primary-foreground/80 mb-10">
-            Rejoignez des milliers de professionnels qui développent leur activité sur ArtisanSN. Inscrivez-vous gratuitement et commencez à recevoir des demandes de clients dans votre ville.
+            Rejoignez des milliers de professionnels qui développent leur activité sur Sunu Artisans. Inscrivez-vous gratuitement et commencez à recevoir des demandes de clients dans votre ville.
           </p>
           <Button asChild size="lg" className="h-14 px-8 text-lg rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
             <Link href="/register-artisan">Rejoindre la Plateforme</Link>
