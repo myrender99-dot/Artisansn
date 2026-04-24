@@ -1,6 +1,20 @@
 import { Link } from "wouter";
-import { Hammer, ShieldCheck } from "lucide-react";
+import { Hammer, ShieldCheck, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+
+const navLinks = [
+  { href: "/artisans", label: "Trouver un Artisan" },
+  { href: "/categories", label: "Services" },
+  { href: "/bookings", label: "Mes Réservations" },
+];
 
 export function Navbar() {
   return (
@@ -13,40 +27,84 @@ export function Navbar() {
               ArtisanSN
             </span>
           </Link>
-          <nav className="hidden md:flex gap-6">
-            <Link
-              href="/artisans"
-              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Trouver un Artisan
-            </Link>
-            <Link
-              href="/categories"
-              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Services
-            </Link>
-            <Link
-              href="/bookings"
-              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Mes Réservations
-            </Link>
+          <nav className="hidden lg:flex gap-6">
+            {navLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            ))}
           </nav>
         </div>
-        <div className="flex items-center space-x-4">
+
+        <div className="hidden sm:flex items-center space-x-2 md:space-x-4">
           <Button asChild variant="outline" size="sm">
             <Link href="/admin">
               <ShieldCheck className="h-4 w-4 mr-1" />
               Admin
             </Link>
           </Button>
-          <Button asChild variant="outline" className="hidden sm:inline-flex">
+          <Button asChild variant="outline" className="hidden md:inline-flex">
             <Link href="/register-artisan">Devenir Artisan</Link>
           </Button>
           <Button asChild>
             <Link href="/artisans">Réserver</Link>
           </Button>
+        </div>
+
+        <div className="sm:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Ouvrir le menu">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
+              <SheetHeader>
+                <SheetTitle className="text-left flex items-center gap-2">
+                  <Hammer className="h-5 w-5 text-primary" />
+                  ArtisanSN
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-1 px-2">
+                {navLinks.map((l) => (
+                  <SheetClose key={l.href} asChild>
+                    <Link
+                      href={l.href}
+                      className="block px-3 py-3 rounded-md text-base font-medium hover:bg-muted"
+                    >
+                      {l.label}
+                    </Link>
+                  </SheetClose>
+                ))}
+                <div className="border-t my-4" />
+                <SheetClose asChild>
+                  <Link
+                    href="/register-artisan"
+                    className="block px-3 py-3 rounded-md text-base font-medium hover:bg-muted"
+                  >
+                    Devenir Artisan
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/admin"
+                    className="block px-3 py-3 rounded-md text-base font-medium hover:bg-muted"
+                  >
+                    Admin
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button asChild className="mt-4 w-full">
+                    <Link href="/artisans">Réserver</Link>
+                  </Button>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
