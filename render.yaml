@@ -1,0 +1,38 @@
+databases:
+  - name: artisansn-db
+    plan: free
+    databaseName: artisansn
+    user: artisansn
+
+services:
+  - type: web
+    name: artisansn
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: |
+      corepack enable
+      corepack prepare pnpm@10.18.2 --activate
+      pnpm install --frozen-lockfile
+      pnpm --filter @workspace/db exec drizzle-kit push --force --config ./drizzle.config.ts
+      BASE_PATH=/ PORT=3000 pnpm --filter @workspace/artisan-sn run build
+      pnpm --filter @workspace/api-server run build
+    startCommand: pnpm --filter @workspace/api-server run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: STATIC_DIR
+        value: /opt/render/project/src/artifacts/artisan-sn/dist/public
+      - key: DATABASE_URL
+        fromDatabase:
+          name: artisansn-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -1,6 +1,8 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import path from "node:path";
+import fs from "node:fs";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -30,5 +32,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+const staticDir = process.env["STATIC_DIR"];
+if (staticDir && fs.existsSync(staticDir)) {
+  logger.info({ staticDir }, "Serving static frontend");
+  app.use(express.static(staticDir));
+  app.get(/^\/(?!api).*/, (_req, res) => {
+    res.sendFile(path.join(staticDir, "index.html"));
+  });
+}
 
 export default app;
