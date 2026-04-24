@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Hammer } from "lucide-react";
+import { Hammer, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
@@ -35,6 +35,12 @@ export function Navbar() {
           </nav>
         </div>
         <div className="flex items-center space-x-4">
+          <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
+            <Link href="/admin">
+              <ShieldCheck className="h-4 w-4 mr-1" />
+              Admin
+            </Link>
+          </Button>
           <Button asChild variant="outline" className="hidden sm:inline-flex">
             <Link href="/register-artisan">Devenir Artisan</Link>
           </Button>
