@@ -11,6 +11,7 @@ import ArtisanProfile from "@/pages/artisan-profile";
 import Categories from "@/pages/categories";
 import RegisterArtisan from "@/pages/register-artisan";
 import Bookings from "@/pages/bookings";
+import Admin from "@/pages/admin";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +34,7 @@ function Router() {
           <Route path="/categories" component={Categories} />
           <Route path="/register-artisan" component={RegisterArtisan} />
           <Route path="/bookings" component={Bookings} />
+          <Route path="/admin" component={Admin} />
           <Route component={NotFound} />
         </Switch>
       </main>
