@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "-yx9JdfyfuIL7Gt6r2IZH"
@@ -18,3 +17,15 @@ id = "nrD-5Tja0tqf4ywoGJ_LC"
 uri = "file://artifacts/artisan-sn/public/tailor.png"
 type = "image"
 title = "Tailor working"
+
+[[generated]]
+id = "dcKrbGVKjvs07z04iobRY"
+uri = "file://attached_assets/generated_images/generated_image.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "FHyGXu-bAy1YhcrF4QBfJ"
+uri = "file://artifacts/artisan-sn/public/affiche-sunu-artisans.png"
+type = "image"
+title = "Affiche promotionnelle Sunu Artisans"
