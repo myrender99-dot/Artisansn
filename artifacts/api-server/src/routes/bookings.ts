@@ -1,9 +1,14 @@
 import { Router } from "express";
-import { db, bookingsTable } from "@workspace/db";
+import { db, bookingsTable, artisansTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
 import { ListBookingsQueryParams, CreateBookingBody, UpdateBookingParams, UpdateBookingBody } from "@workspace/api-zod";
 
 const router = Router();
+
+function normalizePhone(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length > 9 ? digits.slice(-9) : digits;
+}
 
 router.get("/bookings", async (req, res) => {
   const query = ListBookingsQueryParams.safeParse(req.query);
@@ -27,6 +32,23 @@ router.post("/bookings", async (req, res) => {
   if (!body.success) {
     return res.status(400).json({ error: "Invalid body" });
   }
+
+  const [artisan] = await db
+    .select()
+    .from(artisansTable)
+    .where(eq(artisansTable.id, body.data.artisanId));
+
+  if (!artisan) {
+    return res.status(404).json({ error: "Artisan introuvable" });
+  }
+
+  if (normalizePhone(artisan.phone) === normalizePhone(body.data.clientPhone)) {
+    return res.status(400).json({
+      error:
+        "Vous ne pouvez pas réserver vos propres services. Le numéro de téléphone du client est identique à celui de l'artisan.",
+    });
+  }
+
   const [booking] = await db.insert(bookingsTable).values(body.data).returning();
   res.status(201).json(booking);
 });
