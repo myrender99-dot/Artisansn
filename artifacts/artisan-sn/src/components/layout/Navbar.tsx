@@ -35,7 +35,7 @@ export function Navbar() {
           </nav>
         </div>
         <div className="flex items-center space-x-4">
-          <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
+          <Button asChild variant="outline" size="sm">
             <Link href="/admin">
               <ShieldCheck className="h-4 w-4 mr-1" />
               Admin
