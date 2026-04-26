@@ -61,8 +61,8 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: "Sunu Artisans",
-        short_name: "Sunu Artisans",
+        name: "Teranga Services",
+        short_name: "Teranga",
         description:
           "La marketplace de confiance des artisans au Sénégal. Plombiers, couturiers, électriciens, menuisiers et plus.",
         lang: "fr",

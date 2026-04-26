@@ -9,7 +9,7 @@ export function Footer() {
           <Link href="/" className="flex items-center space-x-2 mb-4">
             <Hammer className="h-6 w-6 text-primary" />
             <span className="font-serif font-bold text-xl inline-block text-primary">
-              Sunu Artisans
+              Teranga Services
             </span>
           </Link>
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -51,7 +51,7 @@ export function Footer() {
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Sunu Artisans. Fait avec <Heart className="inline h-3 w-3 text-destructive mx-1" /> au Sénégal.
+          © {new Date().getFullYear()} Teranga Services. Fait avec <Heart className="inline h-3 w-3 text-destructive mx-1" /> au Sénégal.
         </p>
       </div>
     </footer>

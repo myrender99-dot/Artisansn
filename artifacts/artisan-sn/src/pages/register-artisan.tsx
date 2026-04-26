@@ -56,7 +56,7 @@ export default function RegisterArtisan() {
           setIsSuccess(true);
           toast({
             title: "Inscription réussie !",
-            description: "Bienvenue sur Sunu Artisans. Votre profil est maintenant en ligne.",
+            description: "Bienvenue sur Teranga Services. Votre profil est maintenant en ligne.",
           });
           setTimeout(() => {
             setLocation(`/artisans/${data.id}`);
@@ -79,7 +79,7 @@ export default function RegisterArtisan() {
         <div className="bg-primary/5 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="h-12 w-12 text-primary" />
         </div>
-        <h1 className="text-3xl font-serif font-bold text-foreground mb-4">Bienvenue sur Sunu Artisans !</h1>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-4">Bienvenue sur Teranga Services !</h1>
         <p className="text-lg text-muted-foreground mb-8">
           Votre profil a été créé avec succès. Vous allez être redirigé vers votre nouvelle page de profil...
         </p>
@@ -92,7 +92,7 @@ export default function RegisterArtisan() {
       <div className="text-center mb-10">
         <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Rejoindre la Plateforme</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Créez votre profil professionnel sur Sunu Artisans pour vous connecter avec des milliers de clients qui recherchent vos compétences. L'inscription est gratuite.
+          Créez votre profil professionnel sur Teranga Services pour vous connecter avec des milliers de clients qui recherchent vos compétences. L'inscription est gratuite.
         </p>
       </div>
 
