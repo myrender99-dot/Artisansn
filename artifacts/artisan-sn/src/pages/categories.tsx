@@ -1,19 +1,52 @@
 import { useListServices } from "@workspace/api-client-react";
 import { Link } from "wouter";
-import { Wrench, ArrowRight, Home, Zap, Scissors, Car, Paintbrush, Briefcase } from "lucide-react";
+import {
+  Wrench, ArrowRight, Home, Zap, Scissors, Car, Paintbrush, Briefcase,
+  Sparkles, Building2, Leaf, Wind, Droplets, Hammer,
+  Laptop, Code, BookOpen, GraduationCap, Camera, PartyPopper,
+  ChefHat, Cake, Heart, SprayCan, HandHeart, Truck, Package,
+  Flame, Grid3x3, Square, Refrigerator, Footprints, Sofa, Languages,
+} from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const getIconForCategory = (name: string) => {
-  const lowerName = name.toLowerCase();
-  if (lowerName.includes('plomb')) return <Wrench className="h-8 w-8" />;
-  if (lowerName.includes('electr') || lowerName.includes('électr')) return <Zap className="h-8 w-8" />;
-  if (lowerName.includes('coutur') || lowerName.includes('taill')) return <Scissors className="h-8 w-8" />;
-  if (lowerName.includes('mécan') || lowerName.includes('auto')) return <Car className="h-8 w-8" />;
-  if (lowerName.includes('peint')) return <Paintbrush className="h-8 w-8" />;
-  if (lowerName.includes('menuis') || lowerName.includes('bois')) return <Home className="h-8 w-8" />;
-  return <Briefcase className="h-8 w-8" />;
+  const n = name.toLowerCase();
+  const cls = "h-8 w-8";
+  if (n.includes('plomb')) return <Droplets className={cls} />;
+  if (n.includes('électr') && (n.includes('ménager') || n.includes('menager'))) return <Refrigerator className={cls} />;
+  if (n.includes('electr') || n.includes('électr')) return <Zap className={cls} />;
+  if (n.includes('menuis') || n.includes('bois')) return <Hammer className={cls} />;
+  if (n.includes('coutur') || n.includes('taill')) return <Scissors className={cls} />;
+  if (n.includes('mécan') || n.includes('auto') || n.includes('mecan')) return <Car className={cls} />;
+  if (n.includes('coiff')) return <Sparkles className={cls} />;
+  if (n.includes('peint')) return <Paintbrush className={cls} />;
+  if (n.includes('maçon') || n.includes('macon') || n.includes('construc')) return <Building2 className={cls} />;
+  if (n.includes('jardin') || n.includes('vert')) return <Leaf className={cls} />;
+  if (n.includes('clim')) return <Wind className={cls} />;
+  if (n.includes('développement') || n.includes('developpement') || n.includes('web') || n.includes('mobile')) return <Code className={cls} />;
+  if (n.includes('informa') || n.includes('ordinat')) return <Laptop className={cls} />;
+  if (n.includes('cours') || n.includes('tutorat') || n.includes('scolaire')) return <BookOpen className={cls} />;
+  if (n.includes('formation') || n.includes('éduc') || n.includes('educ')) return <GraduationCap className={cls} />;
+  if (n.includes('photo') || n.includes('vidéo') || n.includes('video')) return <Camera className={cls} />;
+  if (n.includes('événement') || n.includes('evenement') || n.includes('mariage') || n.includes('cérémon')) return <PartyPopper className={cls} />;
+  if (n.includes('traiteur') || n.includes('cuisine') || n.includes('restaur')) return <ChefHat className={cls} />;
+  if (n.includes('pâtiss') || n.includes('patiss') || n.includes('gâteau') || n.includes('gateau')) return <Cake className={cls} />;
+  if (n.includes('beauté') || n.includes('beaute') || n.includes('esthét') || n.includes('estheti') || n.includes('manucure') || n.includes('maquillage')) return <Heart className={cls} />;
+  if (n.includes('ménag') || n.includes('menag') || n.includes('nettoy')) return <SprayCan className={cls} />;
+  if (n.includes('aide') || n.includes('garde') || n.includes('domicile')) return <HandHeart className={cls} />;
+  if (n.includes('transport') || n.includes('livr')) return <Truck className={cls} />;
+  if (n.includes('démén') || n.includes('demen')) return <Package className={cls} />;
+  if (n.includes('soud') || n.includes('métall') || n.includes('metall') || n.includes('forge')) return <Flame className={cls} />;
+  if (n.includes('carre') || n.includes('faïence') || n.includes('faience')) return <Grid3x3 className={cls} />;
+  if (n.includes('vitr') || n.includes('miroir')) return <Square className={cls} />;
+  if (n.includes('cordon') || n.includes('chauss')) return <Footprints className={cls} />;
+  if (n.includes('décor') || n.includes('decor') || n.includes('intérieur') || n.includes('interieur') || n.includes('aménag') || n.includes('amenag')) return <Sofa className={cls} />;
+  if (n.includes('traduc') || n.includes('rédac') || n.includes('redac') || n.includes('langue')) return <Languages className={cls} />;
+  if (n.includes('plomb')) return <Wrench className={cls} />;
+  if (n.includes('maison')) return <Home className={cls} />;
+  return <Briefcase className={cls} />;
 };
 
 export default function Categories() {
