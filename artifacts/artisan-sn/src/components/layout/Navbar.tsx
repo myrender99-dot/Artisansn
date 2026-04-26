@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Hammer, ShieldCheck, Menu } from "lucide-react";
+import { Hammer, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -41,12 +41,6 @@ export function Navbar() {
         </div>
 
         <div className="hidden sm:flex items-center space-x-2 md:space-x-4">
-          <Button asChild variant="outline" size="sm">
-            <Link href="/admin">
-              <ShieldCheck className="h-4 w-4 mr-1" />
-              Admin
-            </Link>
-          </Button>
           <Button asChild variant="outline" className="hidden md:inline-flex">
             <Link href="/register-artisan">Devenir Artisan</Link>
           </Button>
@@ -87,14 +81,6 @@ export function Navbar() {
                     className="block px-3 py-3 rounded-md text-base font-medium hover:bg-muted"
                   >
                     Devenir Artisan
-                  </Link>
-                </SheetClose>
-                <SheetClose asChild>
-                  <Link
-                    href="/admin"
-                    className="block px-3 py-3 rounded-md text-base font-medium hover:bg-muted"
-                  >
-                    Admin
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
