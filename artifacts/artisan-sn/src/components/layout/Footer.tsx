@@ -32,7 +32,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/bookings" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Gérer les Réservations
+                  Mes Réservations
                 </Link>
               </li>
             </ul>
@@ -43,6 +43,21 @@ export function Footer() {
               <li>
                 <Link href="/register-artisan" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Rejoindre la Plateforme
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold">Aide & Infos</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comment ça marche
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Questions Fréquentes
                 </Link>
               </li>
             </ul>

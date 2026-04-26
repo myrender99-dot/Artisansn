@@ -1,12 +1,13 @@
 import { useGetStats, useGetTopRatedArtisans, useListServices } from "@workspace/api-client-react";
 import { Link, useLocation } from "wouter";
-import { Search, Users, CheckCircle, MapPin, Wrench } from "lucide-react";
+import { Search, Users, Calendar, MapPin, Wrench } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArtisanCard } from "@/components/ui/artisan-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { CategoryIcon } from "@/lib/category-icon";
 import { useState } from "react";
 
 export default function Home() {
@@ -77,9 +78,9 @@ export default function Home() {
               label="Artisans Inscrits"
             />
             <StatCard 
-              icon={<CheckCircle className="h-6 w-6 text-green-500" />}
+              icon={<Calendar className="h-6 w-6 text-green-500" />}
               value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.completedJobs.toString()}
-              label="Travaux Réalisés"
+              label="Réservations Confirmées"
             />
             <StatCard 
               icon={<MapPin className="h-6 w-6 text-accent" />}
@@ -88,7 +89,7 @@ export default function Home() {
             />
             <StatCard 
               icon={<Wrench className="h-6 w-6 text-primary" />}
-              value={isStatsLoading ? <Skeleton className="h-8 w-16 mx-auto" /> : stats?.totalCategories.toString()}
+              value={isStatsLoading || !servicesData ? <Skeleton className="h-8 w-16 mx-auto" /> : servicesData.services.length.toString()}
               label="Catégories de Services"
             />
           </div>
@@ -119,7 +120,7 @@ export default function Home() {
                   <Card className="h-full hover-elevate transition-all cursor-pointer group border-primary/10">
                     <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full gap-3">
                       <div className="p-3 rounded-full bg-primary/5 text-primary group-hover:bg-secondary group-hover:text-secondary-foreground transition-colors">
-                        <Wrench className="h-6 w-6" />
+                        <CategoryIcon name={category.name} className="h-6 w-6" />
                       </div>
                       <span className="font-medium text-sm">{category.name}</span>
                     </CardContent>

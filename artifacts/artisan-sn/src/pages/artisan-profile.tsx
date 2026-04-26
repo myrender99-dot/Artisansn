@@ -12,7 +12,7 @@ import { getListReviewsQueryKey, getGetArtisanQueryKey } from "@workspace/api-cl
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, Star, Phone, Mail, Clock, ShieldCheck, Wrench, Calendar as CalendarIcon, ChevronLeft, Edit } from "lucide-react";
+import { MapPin, Star, Phone, Mail, Clock, ShieldCheck, Wrench, Calendar as CalendarIcon, ChevronLeft, Edit, MessageCircle } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -367,6 +367,29 @@ export default function ArtisanProfile() {
                     </Badge>
                   )}
                 </div>
+
+                <div className="flex flex-wrap gap-3 pt-3">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-sm"
+                  >
+                    <a
+                      href={`https://wa.me/${artisan.phone.replace(/\D/g, "").replace(/^0+/, "221")}?text=${encodeURIComponent(`Bonjour ${artisan.name}, je vous contacte via Teranga Services pour un service de ${artisan.category.toLowerCase()}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="h-5 w-5 mr-2" />
+                      Contacter sur WhatsApp
+                    </a>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <a href={`tel:${artisan.phone}`}>
+                      <Phone className="h-5 w-5 mr-2" />
+                      Appeler
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
             
@@ -515,13 +538,30 @@ export default function ArtisanProfile() {
                   <CardDescription>Informations de contact directes pour cet artisan</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center p-4 bg-muted/30 rounded-lg border">
-                    <Phone className="h-5 w-5 mr-4 text-primary" />
+                  <a
+                    href={`https://wa.me/${artisan.phone.replace(/\D/g, "").replace(/^0+/, "221")}?text=${encodeURIComponent(`Bonjour ${artisan.name}, je vous contacte via Teranga Services pour un service de ${artisan.category.toLowerCase()}.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center p-4 bg-[#25D366]/10 hover:bg-[#25D366]/20 rounded-lg border border-[#25D366]/30 transition-colors"
+                  >
+                    <MessageCircle className="h-5 w-5 mr-4 text-[#25D366]" />
                     <div>
-                      <p className="text-sm text-muted-foreground font-medium">Numéro de Téléphone</p>
+                      <p className="text-sm text-muted-foreground font-medium">WhatsApp</p>
                       <p className="text-lg font-medium">{artisan.phone}</p>
                     </div>
-                  </div>
+                    <span className="ml-auto text-xs font-medium text-[#25D366]">Discuter →</span>
+                  </a>
+                  <a
+                    href={`tel:${artisan.phone}`}
+                    className="flex items-center p-4 bg-muted/30 hover:bg-muted/50 rounded-lg border transition-colors"
+                  >
+                    <Phone className="h-5 w-5 mr-4 text-primary" />
+                    <div>
+                      <p className="text-sm text-muted-foreground font-medium">Appel Téléphonique</p>
+                      <p className="text-lg font-medium">{artisan.phone}</p>
+                    </div>
+                    <span className="ml-auto text-xs font-medium text-primary">Appeler →</span>
+                  </a>
                   {artisan.email && (
                     <div className="flex items-center p-4 bg-muted/30 rounded-lg border">
                       <Mail className="h-5 w-5 mr-4 text-primary" />

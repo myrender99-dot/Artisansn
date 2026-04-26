@@ -1,78 +1,75 @@
+import { useState, useMemo } from "react";
 import { useListServices } from "@workspace/api-client-react";
 import { Link } from "wouter";
-import {
-  Wrench, ArrowRight, Home, Zap, Scissors, Car, Paintbrush, Briefcase,
-  Sparkles, Building2, Leaf, Wind, Droplets, Hammer,
-  Laptop, Code, BookOpen, GraduationCap, Camera, PartyPopper,
-  ChefHat, Cake, Heart, SprayCan, HandHeart, Truck, Package,
-  Flame, Grid3x3, Square, Refrigerator, Footprints, Sofa, Languages,
-} from "lucide-react";
+import { ArrowRight, Search, X } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const getIconForCategory = (name: string) => {
-  const n = name.toLowerCase();
-  const cls = "h-8 w-8";
-  if (n.includes('plomb')) return <Droplets className={cls} />;
-  if (n.includes('électr') && (n.includes('ménager') || n.includes('menager'))) return <Refrigerator className={cls} />;
-  if (n.includes('electr') || n.includes('électr')) return <Zap className={cls} />;
-  if (n.includes('menuis') || n.includes('bois')) return <Hammer className={cls} />;
-  if (n.includes('coutur') || n.includes('taill')) return <Scissors className={cls} />;
-  if (n.includes('mécan') || n.includes('auto') || n.includes('mecan')) return <Car className={cls} />;
-  if (n.includes('coiff')) return <Sparkles className={cls} />;
-  if (n.includes('peint')) return <Paintbrush className={cls} />;
-  if (n.includes('maçon') || n.includes('macon') || n.includes('construc')) return <Building2 className={cls} />;
-  if (n.includes('jardin') || n.includes('vert')) return <Leaf className={cls} />;
-  if (n.includes('clim')) return <Wind className={cls} />;
-  if (n.includes('développement') || n.includes('developpement') || n.includes('web') || n.includes('mobile')) return <Code className={cls} />;
-  if (n.includes('informa') || n.includes('ordinat')) return <Laptop className={cls} />;
-  if (n.includes('cours') || n.includes('tutorat') || n.includes('scolaire')) return <BookOpen className={cls} />;
-  if (n.includes('formation') || n.includes('éduc') || n.includes('educ')) return <GraduationCap className={cls} />;
-  if (n.includes('photo') || n.includes('vidéo') || n.includes('video')) return <Camera className={cls} />;
-  if (n.includes('événement') || n.includes('evenement') || n.includes('mariage') || n.includes('cérémon')) return <PartyPopper className={cls} />;
-  if (n.includes('traiteur') || n.includes('cuisine') || n.includes('restaur')) return <ChefHat className={cls} />;
-  if (n.includes('pâtiss') || n.includes('patiss') || n.includes('gâteau') || n.includes('gateau')) return <Cake className={cls} />;
-  if (n.includes('beauté') || n.includes('beaute') || n.includes('esthét') || n.includes('estheti') || n.includes('manucure') || n.includes('maquillage')) return <Heart className={cls} />;
-  if (n.includes('ménag') || n.includes('menag') || n.includes('nettoy')) return <SprayCan className={cls} />;
-  if (n.includes('aide') || n.includes('garde') || n.includes('domicile')) return <HandHeart className={cls} />;
-  if (n.includes('transport') || n.includes('livr')) return <Truck className={cls} />;
-  if (n.includes('démén') || n.includes('demen')) return <Package className={cls} />;
-  if (n.includes('soud') || n.includes('métall') || n.includes('metall') || n.includes('forge')) return <Flame className={cls} />;
-  if (n.includes('carre') || n.includes('faïence') || n.includes('faience')) return <Grid3x3 className={cls} />;
-  if (n.includes('vitr') || n.includes('miroir')) return <Square className={cls} />;
-  if (n.includes('cordon') || n.includes('chauss')) return <Footprints className={cls} />;
-  if (n.includes('décor') || n.includes('decor') || n.includes('intérieur') || n.includes('interieur') || n.includes('aménag') || n.includes('amenag')) return <Sofa className={cls} />;
-  if (n.includes('traduc') || n.includes('rédac') || n.includes('redac') || n.includes('langue')) return <Languages className={cls} />;
-  if (n.includes('plomb')) return <Wrench className={cls} />;
-  if (n.includes('maison')) return <Home className={cls} />;
-  return <Briefcase className={cls} />;
-};
+import { CategoryIcon } from "@/lib/category-icon";
 
 export default function Categories() {
   const { data: servicesData, isLoading } = useListServices();
+  const [search, setSearch] = useState("");
+
+  const filteredServices = useMemo(() => {
+    if (!servicesData?.services) return [];
+    const q = search.trim().toLowerCase();
+    if (!q) return servicesData.services;
+    return servicesData.services.filter((s) =>
+      s.name.toLowerCase().includes(q) ||
+      (s.description ?? "").toLowerCase().includes(q)
+    );
+  }, [servicesData, search]);
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
-      <div className="text-center max-w-2xl mx-auto mb-12">
+      <div className="text-center max-w-2xl mx-auto mb-10">
         <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Catégories de Services</h1>
         <p className="text-lg text-muted-foreground">
           Parcourez notre répertoire complet de professionnels qualifiés dans tout le Sénégal. Quels que soient vos besoins, nous avons le bon expert pour vous.
         </p>
       </div>
 
+      <div className="max-w-xl mx-auto mb-10 relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Rechercher une catégorie (ex. plomberie, photo, traiteur...)"
+          className="pl-10 pr-10 h-12 text-base"
+        />
+        {search && (
+          <button
+            type="button"
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            aria-label="Effacer la recherche"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
+      {!isLoading && servicesData && (
+        <p className="text-sm text-muted-foreground text-center mb-6">
+          {filteredServices.length} {filteredServices.length === 1 ? "catégorie" : "catégories"}
+          {search && ` correspondent à « ${search} »`}
+        </p>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {isLoading ? (
           Array.from({ length: 8 }).map((_, i) => (
             <Skeleton key={i} className="h-48 rounded-xl" />
           ))
-        ) : servicesData?.services.length ? (
-          servicesData.services.map((category) => (
+        ) : filteredServices.length ? (
+          filteredServices.map((category) => (
             <Link key={category.id} href={`/artisans?category=${encodeURIComponent(category.name)}`}>
               <Card className="h-full hover-elevate transition-all duration-300 cursor-pointer group border-primary/10 overflow-hidden">
                 <CardContent className="p-6 h-full flex flex-col items-center text-center justify-center relative">
                   <div className="mb-4 p-4 rounded-full bg-primary/5 text-primary group-hover:bg-secondary group-hover:text-secondary-foreground transition-all duration-300">
-                    {getIconForCategory(category.name)}
+                    <CategoryIcon name={category.name} className="h-8 w-8" />
                   </div>
                   <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
                     {category.name}
@@ -89,8 +86,14 @@ export default function Categories() {
             </Link>
           ))
         ) : (
-          <div className="col-span-full py-20 text-center text-muted-foreground bg-muted/20 rounded-xl">
-            Aucune catégorie trouvée.
+          <div className="col-span-full py-20 text-center bg-muted/20 rounded-xl">
+            <Search className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground mb-4">
+              Aucune catégorie ne correspond à « {search} ».
+            </p>
+            <Button variant="outline" onClick={() => setSearch("")}>
+              Effacer la recherche
+            </Button>
           </div>
         )}
       </div>
